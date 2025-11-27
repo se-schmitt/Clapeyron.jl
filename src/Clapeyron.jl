@@ -283,6 +283,7 @@ include("models/Electrolytes/Ion/MSA.jl")
 include("models/Electrolytes/Ion/MSABorn.jl")
 include("models/Electrolytes/Ion/GCMSABorn.jl")
 include("models/Electrolytes/Ion/MSAID.jl")
+include("models/Electrolytes/Ion/Pitzer.jl")
 include("models/Electrolytes/RSP/MM1.jl")
 
 include("models/SAFT/SAFTgammaMie/variants/SAFTgammaEMie.jl")
