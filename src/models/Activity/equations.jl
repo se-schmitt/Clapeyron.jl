@@ -53,6 +53,8 @@ end
 
 K0_lle_init(::IdealLiquidSolution,p,T,z) = throw(error("IdealLiquidSolution() does not support LLE equilibria."))
 
+_gEᵣview(model, V, T, z) = excess_gibbs_free_energy(model, V, T, @view(z[1:end])) / (Rgas(model)*T)
+
 function lnγ(model::ActivityModel,p,T,z,cache::TT = nothing) where TT
     X = gradient_type(model,T,z)
     nc = length(z)
@@ -70,7 +72,7 @@ function lnγ(model::ActivityModel,p,T,z,cache::TT = nothing) where TT
             return out
         end
     else
-        fun(x) = excess_gibbs_free_energy(model,p,T,@view(x[1:nc]))/(Rgas(model)*T)
+        fun = ZVar(_gEᵣview, model, p, T)
         if cache isa Tuple
             result,aux,lnγ,∂lnγ∂n,∂lnγ∂T,_,_,hconfig = cache
             aux .= 0
