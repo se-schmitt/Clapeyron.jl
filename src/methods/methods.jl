@@ -51,7 +51,6 @@ function group_Mw(Mw_gc::SingleParam,groups::GroupParam)
     v = groups.n_flattenedgroups
     mw_gc = Mw_gc.values
     for i in 1:n
-        @show v[i],mw_gc
         mw_comp[i] = dot(mw_gc,v[i])
     end
     return mw_comp
