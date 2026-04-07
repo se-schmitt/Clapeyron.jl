@@ -396,7 +396,7 @@ model = PCSAFT(smiles"CCCCO")
 ```
 
 !!! info
-    No canonization is applied internally. Consequently, only SMILES contained in the `identifiers.csv` will be found.
+    No canonicalization is applied internally. Consequently, only SMILES contained in the `identifiers.csv` will be found.
 """
 macro smiles_str(str)
     BySmiles(str)
