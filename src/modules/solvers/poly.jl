@@ -221,6 +221,10 @@ function real_roots3(pol::NTuple{4,T}) where {T<:Real}
         end
     end
 end
+function real_roots3(pol::Tuple{T1,T2,T3,T4}) where {T1<:Number,T2<:Number,T3<:Number,T4<:Number}
+    TT = promote_type(T1,T2,T3,T4)
+    return real_roots3(TT.(pol))
+end
 
 real_roots3(a,b,c,d) = real_roots3((a,b,c,d))
 

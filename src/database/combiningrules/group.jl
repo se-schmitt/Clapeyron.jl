@@ -142,10 +142,10 @@ function group_fractions(groups::MixedGCSegmentParam{T1},z::AbstractVector{T2}) 
     return x
 end
 
-function group_fractions(groups::GroupParam,z)
+function group_fractions(groups::GroupParam{T},z) where T
     ng = length(groups.flattenedgroups)
     n_flattenedgroups = groups.n_flattenedgroups
-    x = similar(z,ng)
+    x = zeros(Base.promote_eltype(T,z),ng)
     nc = length(z)
     fill!(x,zero(eltype(x)))
     @inbounds for i in 1:nc
