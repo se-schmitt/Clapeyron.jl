@@ -30,7 +30,8 @@ warnonly = Documenter.except(),
                             "Empiric Helmholtz Models" => "eos/empiric.md"
                             "Electrolyte Models" => "eos/electrolytes.md"
                             "Property Correlations" =>  "eos/correlations.md"
-                            "Other Models" => "eos/misc.md"],
+                            "Other Models" => "eos/misc.md"
+                            "ML Models ↗" => "eos/ml_external.md"],
         "Frequently Asked Questions" => "faq.md",
         "Available Properties" => ["Basic Properties" => "properties/basic.md",
                                    "Bulk Properties" => "properties/bulk.md",
