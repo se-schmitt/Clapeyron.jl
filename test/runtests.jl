@@ -1,6 +1,7 @@
 using Test
 t1 = @elapsed using Clapeyron
 using CoolProp #CoolProp ext
+using DirectQhull #convex envelope method
 
 ENV["JULIA_TEST_FAILFAST"] = "false"
 ENV["CLAPEYRON_SHOW_REFERENCES"] = "FALSE" #Disable showing citations

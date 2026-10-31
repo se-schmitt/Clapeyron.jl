@@ -3,7 +3,7 @@
 
 Method to solve the non-reactive multicomponent, multiphase flash problem with the convex envelope method (CEM) [1].
 
-The Gibbs energy of every aggregate state is evaluated on a lattice of the composition simplex (step `1/δ`). The phase split is the facet of the lower convex envelope above the feed composition, found with a linear program (see [`CEMPhaseDiagram`](@ref)).
+The Gibbs energy of every aggregate state is evaluated on a lattice of the composition simplex (step `1/δ`). The lower convex envelope is calculated with Qhull (requires `using DirectQhull`), and the phase split is the facet of the envelope above the feed composition (see [`CEMPhaseDiagram`](@ref)).
 The number of phases does not need to be known, and the method does not depend on initial guesses.
 The CEM result has a discretization error of order `1/δ`. By default, it is refined with a local flash method (`polish`).
 
@@ -54,8 +54,7 @@ function tp_flash_impl(model::EoSModel,p,T,z,method::CEMFlash)
     fluidmodel,fluid,solid = cem_models(model,p,T,z,equilibrium)
     ws = CEMWorkspace(env)
     zf = collect(Float64,z)
-    cem_reset!(ws,env,zf)
-    cem_lp!(ws,env,zf)
+    cem_locate!(ws,env,zf)
     result = cem_flash_result(env,fluid,p,T,zf,ws,stable)
     return cem_polish(fluidmodel,p,T,zf,result,method.polish)
 end
