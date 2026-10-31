@@ -226,11 +226,17 @@ function cem_build_envelope(δ,K,X,G,gpure,P,S,V)
         i = findfirst(isequal(δ),@view(K[:,k]))
         i !== nothing && (vertex[i] = point_column[k])
     end
-    simplices,neighbors,equations = cem_qhull(vcat(X[1:(N - 1),:],permutedims(G)))
+    #columns above the plane of the pure components (g > 0) can not touch the lower envelope. Removing them also
+    #protects Qhull from huge values (failed volume solutions), that destroy its precision.
+    hull_cols = findall(<=(1e-12),G)
+    simplices,neighbors,equations = cem_qhull(vcat(X[1:(N - 1),hull_cols],permutedims(G[hull_cols])))
     #lower facets: the outward normal points to negative g (vertical facets are the boundary of the composition simplex)
     lower = [equations[N,f] < -1e-10 for f in 1:size(simplices,2)]
     id = cumsum(lower)
-    facets = Int32.(simplices[:,lower])
+    facets = Int32.(hull_cols[simplices[:,lower]])
+    #the lower facets must tile the composition simplex: Σ|det(xᵢ)| = 1 (Qhull only prints its precision errors)
+    tiled = sum(f -> abs(det(X[:,facets[:,f]])),axes(facets,2);init = 0.0)
+    isapprox(tiled,1.0,atol = 1e-6) || throw(error("CEM: Qhull returned an invalid convex hull (the lower facets cover $tiled of the composition space)"))
     nb = zeros(Int32,N,size(facets,2))
     for f in findall(lower), j in 1:N
         fn = neighbors[j,f]
